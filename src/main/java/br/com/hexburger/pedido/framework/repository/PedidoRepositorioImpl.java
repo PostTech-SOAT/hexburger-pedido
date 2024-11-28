@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Component
+@Transactional
 @AllArgsConstructor
 public class PedidoRepositorioImpl implements PedidoRepositorioAdaptador {
 
@@ -34,7 +35,6 @@ public class PedidoRepositorioImpl implements PedidoRepositorioAdaptador {
     }
 
     @Override
-    @Transactional
     public void atualizarStatusPedido(String idPedido, String statusPedido) {
         repository.updateStatusPedido(idPedido, statusPedido);
     }

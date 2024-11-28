@@ -1,5 +1,6 @@
 package br.com.hexburger.pedido.framework.api;
 
+import br.com.hexburger.pedido.framework.rabbitmq.PedidoSenderService;
 import br.com.hexburger.pedido.framework.repository.PedidoRepositorioImpl;
 import br.com.hexburger.pedido.framework.repository.ProdutoRepositorioImpl;
 import br.com.hexburger.pedido.interfaceadapters.controller.PedidoController;
@@ -20,6 +21,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @RequestMapping(value = "/v1/pedido")
 public class PedidoAPI {
 
+    private final PedidoSenderService pedidoSenderService;
     private final PedidoRepositorioImpl pedidoRepositorio;
     private final ProdutoRepositorioImpl produtoRepositorio;
 
@@ -32,7 +34,7 @@ public class PedidoAPI {
                                               PedidoDTO pedidoDTO) {
         try {
             PedidoController controller = new PedidoController();
-            return ResponseEntity.ok(controller.criarPedido(pedidoDTO, pedidoRepositorio, produtoRepositorio));
+            return ResponseEntity.ok(controller.criarPedido(pedidoDTO, pedidoSenderService, pedidoRepositorio, produtoRepositorio));
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
         }

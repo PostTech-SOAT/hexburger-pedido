@@ -1,5 +1,6 @@
 package br.com.hexburger.pedido.framework.api;
 
+import br.com.hexburger.pedido.framework.rabbitmq.PedidoSenderService;
 import br.com.hexburger.pedido.framework.repository.PedidoRepositorioImpl;
 import br.com.hexburger.pedido.framework.repository.ProdutoRepositorioImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +26,9 @@ class PedidoAPIIT {
     @Autowired
     private ProdutoRepositorioImpl produtoRepositorio;
 
+    @Autowired
+    private PedidoSenderService pedidoSenderService;
+
     private MockMvc mockMvc;
 
     AutoCloseable openMocks;
@@ -33,7 +37,7 @@ class PedidoAPIIT {
     void setUp() {
 
         openMocks = MockitoAnnotations.openMocks(this);
-        PedidoAPI pedidoAPI = new PedidoAPI(repositorio, produtoRepositorio);
+        PedidoAPI pedidoAPI = new PedidoAPI(pedidoSenderService, repositorio, produtoRepositorio);
         mockMvc = MockMvcBuilders.standaloneSetup(pedidoAPI)
                 .addFilter((request, response, chain) -> {
                     response.setCharacterEncoding("UTF-8");
