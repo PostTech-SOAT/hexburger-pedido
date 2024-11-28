@@ -6,6 +6,7 @@ import br.com.hexburger.pedido.dominio.entidade.Categoria;
 import br.com.hexburger.pedido.dominio.entidade.Combo;
 import br.com.hexburger.pedido.dominio.entidade.Pedido;
 import br.com.hexburger.pedido.dominio.entidade.ProdutoPedido;
+import br.com.hexburger.pedido.framework.rabbitmq.PedidoSenderService;
 import br.com.hexburger.pedido.framework.repository.PedidoRepositorioImpl;
 import br.com.hexburger.pedido.framework.repository.PedidoRepository;
 import br.com.hexburger.pedido.framework.repository.ProdutoRepositorioImpl;
@@ -40,6 +41,9 @@ class CriarPedidoUseCaseIT {
     @Autowired
     private ProdutoRepository produtoRepository;
 
+    @Autowired
+    private PedidoSenderService pedidoSenderService;
+
     AutoCloseable openMocks;
 
     @BeforeEach
@@ -50,7 +54,7 @@ class CriarPedidoUseCaseIT {
         PedidoGateway pedidoGateway = new PedidoGatewayJPA(new PedidoRepositorioImpl(repository));
         ProdutoGateway produtoGateway = new ProdutoGatewayJPA(new ProdutoRepositorioImpl(produtoRepository));
 
-        useCase = new CriarPedidoUseCase(pedidoGateway, produtoGateway);
+        useCase = new CriarPedidoUseCase(pedidoSenderService, pedidoGateway, produtoGateway);
 
     }
 

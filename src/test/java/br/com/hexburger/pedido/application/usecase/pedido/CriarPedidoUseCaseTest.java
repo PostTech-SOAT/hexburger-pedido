@@ -3,6 +3,7 @@ package br.com.hexburger.pedido.application.usecase.pedido;
 import br.com.hexburger.pedido.application.interfacegateway.PedidoGateway;
 import br.com.hexburger.pedido.application.interfacegateway.ProdutoGateway;
 import br.com.hexburger.pedido.dominio.entidade.*;
+import br.com.hexburger.pedido.framework.rabbitmq.PedidoSenderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -30,6 +31,9 @@ class CriarPedidoUseCaseTest {
     @Mock
     private ProdutoGateway produtoGateway;
 
+    @Mock
+    private PedidoSenderService pedidoSenderService;
+
     AutoCloseable openMocks;
 
     private Pedido pedido;
@@ -38,7 +42,7 @@ class CriarPedidoUseCaseTest {
     void setUp() {
 
         openMocks = MockitoAnnotations.openMocks(this);
-        useCase = new CriarPedidoUseCase(pedidoGateway, produtoGateway);
+        useCase = new CriarPedidoUseCase(pedidoSenderService, pedidoGateway, produtoGateway);
         pedido = new Pedido(criarCombosPadrao(), "12345678900");
 
     }
