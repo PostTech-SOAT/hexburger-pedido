@@ -23,7 +23,7 @@ jobs:
         with:
           sonarqube_url: ${{ secrets.SONARQUBE_URL }}
           sonarqube_project_key: ${{ secrets.SONARQUBE_PROJECT_KEY }}
-          sonarqube_token: ${{ secrets.SONARQUBE_TOKEN }}
+          sonarqube_token: ${{ secrets.SONAR_TOKEN }}
 
   unit_tests:
     needs: quality
