@@ -20,7 +20,7 @@ runs:
         projectBaseDir: .
         token: ${{ inputs.sonarqube_token }}
       env:
-        SONAR_TOKEN:: ${{ inputs.sonarqube_token }}
+        SONAR_TOKEN:: ${{ secrets.SONAR_TOKEN }}
     # - name: Get Quality Gate status
     #   run: |
     #     curl -s -u "${{ inputs.sonarqube_token }}:" "${{ inputs.sonarqube_url }}/api/qualitygates/project_status?projectKey=${{ inputs.sonarqube_project_key }}" > sonarqube-quality-gate.json
