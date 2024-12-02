@@ -6,15 +6,26 @@ on:
 env:
   aws_region: us-east-1
   terraform_version: 1.6.5
-  terraform_directory: ./infra/terraform
+  terraform_directory: ./terraform
   terragrunt_version: 0.67.10
   tfvars_file_name: deploy.hcl
   pr_number: ${{ github.event.number }}
   eks_cluster_name: hexburger-eks-cluster
-  AWS_ACCOUNT_ID: 212602060786
+  ECR_REPOSITORY: hexburger-pedido
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
 jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: SonarQube - Quality Gate
+        uses: ./.github/quality/quality-gate
+
   unit_tests:
+    needs: quality
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -37,7 +48,7 @@ jobs:
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_session_token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws_region: ${{ env.aws_region }}
-          aws_account_id: ${{ env.AWS_ACCOUNT_ID }}
+          aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
 
   terraform_plan:
     needs: publish_ecr
