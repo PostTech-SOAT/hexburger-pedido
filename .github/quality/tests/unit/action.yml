@@ -23,8 +23,7 @@ runs:
     - name: Check code coverage
       id: coverage
       run: |
-        mvn jacoco:report
-        mvn jacoco:check
+        mvn sonar:sonar -Pcoverage
       shell: bash
 
     - name: Upload code coverage report
