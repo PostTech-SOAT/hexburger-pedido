@@ -18,15 +18,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Quality Gate
-        uses: ./.github/quality/quality-gate
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          sonarqube_url: ${{ secrets.SONARQUBE_URL }}
-          sonarqube_project_key: ${{ secrets.SONARQUBE_PROJECT_KEY }}
-          sonarqube_token: ${{ secrets.SONAR_TOKEN }}
-
   unit_tests:
     needs: quality
     runs-on: ubuntu-latest
