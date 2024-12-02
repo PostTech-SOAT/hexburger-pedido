@@ -14,6 +14,14 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
+import static br.com.hexburger.pedido.dominio.entidade.StatusPedido.CANCELADO;
+import static br.com.hexburger.pedido.dominio.entidade.StatusPedido.FINALIZADO;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.equalTo;
+
 @SpringBootTest
 @ActiveProfiles("test")
 class BuscarPedidosUseCaseIT {
@@ -41,8 +49,11 @@ class BuscarPedidosUseCaseIT {
 
         List<Pedido> pedidos = useCase.buscarPedidos();
 
-        // todo adicionar os inserts de um pedido para cada status de pedido e comparar a igualdade nesse teste
-
+        assertThat(pedidos, is(not(empty())));
+        pedidos.forEach(pedido -> {
+            assertThat(pedido.getStatus().name(), is(not(equalTo(FINALIZADO.name()))));
+            assertThat(pedido.getStatus().name(), is(not(equalTo(CANCELADO.name()))));
+        });
 
     }
 
