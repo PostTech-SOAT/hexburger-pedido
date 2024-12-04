@@ -32,5 +32,5 @@ runs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
     - name: Build and analyze
-      run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=PostTech-SOAT_hexburger-pedido
+      run: mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=PostTech-SOAT_hexburger-pedido -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
       shell: bash
