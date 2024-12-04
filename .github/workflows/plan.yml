@@ -16,20 +16,16 @@ env:
   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
 jobs:
-  sonarcloud:
-    name: SonarCloud
+  quality:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env: 
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: SonarQube - Quality Gate
+        uses: ./.github/quality/quality-gate
 
   unit_tests:
-    needs: sonarcloud
+    needs: quality
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
